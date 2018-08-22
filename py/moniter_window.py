@@ -5,6 +5,7 @@ import win32gui
 import win32process
 import win32con
 import win32api
+import time
 
 user32 = ctypes.windll.user32
 ole32 = ctypes.windll.ole32
@@ -20,9 +21,28 @@ WinEventProcType = ctypes.WINFUNCTYPE(
     ctypes.wintypes.DWORD
 )
 
-def lowindow(hwnd):
-    print('window {} => {}'.format(hwnd, win32gui.GetWindowText(hwnd)))
+class POINT(ctypes.Structure):
+    _fields_ = [("x", ctypes.c_int),
+                ("y", ctypes.c_int)]
 
+
+class RECT(ctypes.Structure):
+    _fields_ = [
+            ('left', ctypes.wintypes.LONG),
+            ('top', ctypes.wintypes.LONG),
+            ('right', ctypes.wintypes.LONG),
+            ('bottom', ctypes.wintypes.LONG)]
+  
+    x = property(lambda self: self.left)
+    y = property(lambda self: self.top)
+    w = property(lambda self: self.right - self.left)
+    h = property(lambda self: self.bottom - self.top)
+
+def log_window(hwnd):
+    rc = RECT()
+    user32.GetWindowRect(hwnd, ctypes.byref(rc))
+
+    print('window {} => {}, rect:{},{},{},{}'.format(hwnd, win32gui.GetWindowText(hwnd), rc.x, rc.y, rc.w, rc.h))
 
 def def_win32_loop():
     msg = ctypes.wintypes.MSG()
@@ -35,7 +55,7 @@ def moniter_window_title(title):
     if not window:
         print('not found window')
         sys.exit(1)
-    lowindow(window)
+    log_window(window)
     thread_id, process_id = win32process.GetWindowThreadProcessId(window)
     
     print('process_id {} thread_id {}'.format(process_id, thread_id))
@@ -44,7 +64,7 @@ def moniter_window_title(title):
     CHILDID_SELF = 0
     def win_event_proc_cb(hook, event, hwnd, idObject, idChild, idEventThread, dwtime):
         if hwnd == window and event == win32con.EVENT_OBJECT_NAMECHANGE and idObject == OBJID_WINDOW  and idChild == CHILDID_SELF :
-            lowindow(hwnd)
+            log_window(hwnd)
 
     ole32.CoInitialize(0)
     DWORD = ctypes.c_ulong
@@ -74,7 +94,7 @@ def moniter_window_title(title):
 def moniter_fg_window():
     def win_event_proc_cb(hWinEventHook, event, hwnd, idObject,
                      idChild, dwEventThread, dwmsEventTime):
-        lowindow(win32gui.GetForegroundWindow())
+        log_window(win32gui.GetForegroundWindow())
 
     win_event_proc = WinEventProcType(win_event_proc_cb)
 
@@ -97,4 +117,11 @@ def moniter_fg_window():
     user32.UnhookWinEvent(hook)
     ole32.CoUninitialize()
 
-moniter_fg_window()
+
+# moniter_fg_window()
+
+def find_window_by_pos(x, y):
+    window = user32.WindowFromPoint(POINT(x, y))
+    log_window(window)
+
+find_window_by_pos(1200, 1000)
