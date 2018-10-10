@@ -4,12 +4,16 @@
 #include <algorithm>
 #include <cmath>
 #include <cstdio>
+#include <unistd.h>
+
+#ifndef M_PI
+#define M_PI 3.14159265358979323846 // pi
+#endif                              // !M_PI
 
 const std::size_t k_max_length = 60;
 
 std::string format(const std::vector<std::string> &content, std::size_t max_length)
 {
-    std::cout << "max_length: " << content.size() << std::endl;
     std::string formatted;
     std::string v_sep_l = "|";
     std::string v_sep_r = "|";
@@ -106,14 +110,21 @@ int main()
 {
     std::size_t max_length = 0;
     std::vector<std::string> content;
-    while (std::cin.peek() != std::char_traits<char>::eof())
-    {
-        std::string line;
-        safe_getline(std::cin, line);
-        line = convert_tab_to_space(line);
-        append_normalized(content, line, max_length = get_line_max_length(line, max_length));
-    }
+    std::string line;
 
+    if (isatty(fileno(stdin)))
+    {
+        std::cout << "try pipe to me" << std::endl;
+    }
+    else
+    {
+        while (std::cin.peek() != std::char_traits<char>::eof())
+        {
+            safe_getline(std::cin, line);
+            line = convert_tab_to_space(line);
+            append_normalized(content, line, max_length = get_line_max_length(line, max_length));
+        }
+    }
     std::string formmatted = format(content, max_length);
 
     const char cow[] = R"(         \  ^__^
