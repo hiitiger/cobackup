@@ -1,4 +1,4 @@
-# Why Qt - MOC反射小用
+# Cooler C++ - MOC反射小用
 
 
 用过Qt的童鞋都了解Qt利用MOC实现了一些有趣的功能，比如反射、signal slot等。而Qt所带的这些特色功能时常能帮我们解决一些有趣的问题。
