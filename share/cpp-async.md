@@ -1,4 +1,4 @@
-# uncool C++ - make async cool again
+# Cooler C++ - make async cool again
 
 这是我们C++使用中经常遇到的一个小问题，异步调用和回调。
 
