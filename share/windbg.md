@@ -25,6 +25,7 @@
 	 *  dds esp/ dds ebp 打印堆栈上的符号，然后进行手工回溯，
 	 * 如果esp, ebp已经被破坏，通过!teb 指令 获取线程的esp和ebp
 	 * 回溯成功后kv=ebp esp 来查看堆栈
+	 * wt [WatchOptions] [= StartAddress] [EndAddress]  追踪调用栈
 
 6. 	堆栈操作
 	* kv, kv=ebp esp
@@ -35,13 +36,14 @@
 
 7.	查看内存
 	* d*
-	* 查看局部变量 dv minidump下基本只能看到一层树
-	* 按类型显示变量 dt
+	* dds 查符号
+	* dv 查看局部变量 minidump下基本只能看到一层树
+	* dt 按类型显示变量 
 	* 查看寄存器 r
-	*  搜索内存 S -d [Range] [Pattern]
-	* 查字符串 dpa，dpu
-	* 解引用指针 dpp
-	* 查看链表 dl
+	* 搜索内存 S -d [Range] [Pattern]
+	* dpa，dpu 查字符串
+	* dpp 解引用指针 
+	* dl 查看链表
 
 8. 查看符号
 	* ln [addr] 显示指定地址附件的符号
@@ -54,20 +56,26 @@
 	* 加载模块符号 .reload
 	*  通过.reload /f /i pdbfilepath=Addr, 强行将pdb文件load到Addr地址， Addr应该是没有被其他模块占用的地址
 	* !sym noisy, reload /f /o
+		 
+	* 模块被卸载问题或模块内存看不到
+		记录模块加载的baseaddr
+		.reload /u moduel
+		.reload /f /i /path/to/local/dll=baseaddr
+
 
 10. 搜索this指针
 	* 搜索模块符号， 可以用来通过搜索虚函数地址来搜索对象的地址this指针
 	* x Module!ClassName::*vftable* --> vtbale_address
 	* s -d [range] vtbale_address
 
-11. 调试堆破坏(fulldump)
+11. 调试堆破坏(fulldump, not much help)
 	* !heap -v [heap], 检查堆
 	* !heap -i [address],  获取address的信息
 	* !heap -flt s [size], 列出大小为size的heap堆块
 	* !heap -stat -h [handle], 统计堆的使用信息
 	* !heap -x [address], 搜索包含address的堆块
 
-12. 内存泄漏(fulldump)
+12. 内存泄漏(only fulldump)
 	* !heap -s 堆使用统计信息
 	* !heap -stat -h [handle], 查看某个堆的使用信息
 	* !heap -flt s [size], 列出大小为size的heap堆块
