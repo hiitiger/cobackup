@@ -1,0 +1,60 @@
+[line_break]
+disabled = false
+
+[character]
+success_symbol = '[➜](bold green)'
+error_symbol = '[➜](bold red)'
+
+
+[username]
+format = "[$user]($style)"
+disabled = false
+show_always = true
+
+[hostname]
+ssh_only = false
+ssh_symbol = '🌐 '
+format = "[$ssh_symbol](#)@[$hostname]($style)💻 "
+disabled = false
+style = "bold italic $style"
+
+[directory]
+truncation_length = 4
+truncation_symbol = "…/"
+truncate_to_repo = true # truncates directory to root folder if in github repo
+style = "bold italic $style"
+
+[cmd_duration]
+min_time = 4000
+show_milliseconds = false
+disabled = false
+style = "bold italic #87A752"
+format = ' ⏳ [$duration]($style) '
+
+[git_branch]
+symbol = "󰊤 "
+format = "[$symbol$branch]($style)"
+style = "bold yellow"
+
+[git_commit]
+commit_hash_length = 8
+style = "bold white"
+
+[git_state]
+format = '[\($state( $progress_current of $progress_total)\)]($style) '
+
+[git_status]
+format = '( [\[$all_status$ahead_behind\]]($style) )'
+
+
+[conda]
+format = " [$environment](bold gree)"
+ignore_base = false
+
+[nodejs]
+format = " [ $version](bold red) "
+detect_files = ["package.json", ".node-version"]
+detect_folders = ["node_modules"]
+
+[package]
+disabled = true
