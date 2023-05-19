@@ -5,24 +5,30 @@ disabled = false
 success_symbol = '[➜](bold green)'
 error_symbol = '[➜](bold red)'
 
+[os]
+disabled = false
+format = "$symbol "
+
+[os.symbols]
+Windows = "🪟"
+Ubuntu = "🎯"
 
 [username]
-format = "[$user]($style)"
+format = "[▓](#a3aed2)[ $user ](fg:#090c0c bg:#a3aed2)[](fg:#a3aed2 bg:#DA627D)"
 disabled = false
 show_always = true
 
 [hostname]
 ssh_only = false
-ssh_symbol = '🌐 '
-format = "[$ssh_symbol](#)@[$hostname]($style)💻 "
+format = "[$hostname ](fg:#090c0c bg:#DA627D)[](fg:#DA627D)💻 "
 disabled = false
-style = "bold italic $style"
 
 [directory]
 truncation_length = 4
 truncation_symbol = "…/"
 truncate_to_repo = true # truncates directory to root folder if in github repo
-style = "bold italic $style"
+style = "fg:#090c0c bg:#769ff0"
+format = "[ ﱮ $path ]($style)"
 
 [cmd_duration]
 min_time = 4000
@@ -32,9 +38,8 @@ style = "bold italic #87A752"
 format = ' ⏳ [$duration]($style) '
 
 [git_branch]
-symbol = "󰊤 "
-format = "[$symbol$branch]($style)"
-style = "bold yellow"
+symbol = " 󰊤 "
+format = "[$symbol$branch ](fg:#1C3A5E bg:#FCF392)"
 
 [git_commit]
 commit_hash_length = 8
